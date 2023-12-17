@@ -1,6 +1,8 @@
 Monospaci.Py
 ============
 
+< THIS IS A FORK OF THE ORIGINAL REPO FOR THE SOLE PURPOSE OF UPDATING THE SCRIPT TO PYTHON 3 > 
+
 monospaci.py is a Python script utilizing [Fontforge](http://fontforge.org), [ttftable](http://search.cpan.org/~mhosken/Font-TTF-Scripts-1.03/scripts/ttftable), and [ttfautohint] (http://www.freetype.org/ttfautohint/) to scale ordinary variable-width fonts to fixed-width suitable for programming in IDE:s, text editors or terminal emulators.
 
 Motivation
