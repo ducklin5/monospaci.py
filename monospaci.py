@@ -396,5 +396,4 @@ def main():
     generate_mono(args_dict)
 
 if __name__ == '__main__':
-    print("MAIN")
     main()
