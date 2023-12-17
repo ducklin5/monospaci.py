@@ -131,7 +131,7 @@ for arg in sys.argv:
     if arg == '-noscalechar':
         nextArgIsNoScaleChar = True
         continue
-    print 'opening ' + arg
+    print('opening ' + arg)
     font = fontforge.open(arg)
 
     if baseFont == None:
@@ -142,7 +142,7 @@ for arg in sys.argv:
         glifs.add(arg)
 
 if baseFont == None:
-    print "could not open font"
+    print("could not open font")
     exit(42)
 
 mergedFont = baseFont 
@@ -200,19 +200,23 @@ for line in lines:
         continue
 
 nameUnicodes = dict()
-for name in unicodeNames.keys():
+for name in list(unicodeNames.keys()):
     nameUnicodes[unicodeNames[name]] = name
 
 ## preserve aspect correction for some chars
 preserveAspectChars = set() 
-for name in unicodeNames.keys():
+for name in list(unicodeNames.keys()):
     for name in ["REGISTERED SIGN", "COPYRIGHT SIGN", "COMMERCIAL AT"]:
         preserveAspectChars.add(unicodeNames[name])
 
 #############################################################
 
 mergedFontUnicodePoints = set()
+total = len(mergedFont)
+i = 0
 for glyphName in mergedFont:
+    i += 1
+    print(i, "/", total)
     unicodePoint = mergedFont[glyphName].unicode
     if unicodePoint > 0:
         mergedFontUnicodePoints.add(unicodePoint)
@@ -238,7 +242,7 @@ for complementFont in fontList :
                 mergedFont.paste()
                 successfulMergeUnicodePoints.add(unicodePoint)
                 if verbose :
-                    print sys.argv[0] + ": imported " + nameUnicodes[unicodePoint] + " from " + complementFont.fullname
+                    print(sys.argv[0] + ": imported " + nameUnicodes[unicodePoint] + " from " + complementFont.fullname)
             except:
                 pass
         except:
@@ -260,7 +264,7 @@ for char in baseWidthChars :
 
 avgSpacing = avgSpacing / len(baseWidthChars) / 2
 if verbose :
-    print sys.argv[0]+": avgSpacing " + str(avgSpacing)
+    print(sys.argv[0]+": avgSpacing " + str(avgSpacing))
 capitalLetterWidths = 0 
 for char in capitalWidthChars :
     bounds = mergedFont[char].boundingBox()
@@ -270,7 +274,7 @@ for char in capitalWidthChars :
 avgCapitalLetterWidth = capitalLetterWidths / len(capitalWidthChars)
 
 if verbose :
-    print sys.argv[0]+": avgCapitalLetterWidth: " + str(avgCapitalLetterWidth)
+    print(sys.argv[0]+": avgCapitalLetterWidth: " + str(avgCapitalLetterWidth))
 
 capitalLetters = set()
 for name in unicodeNames:
@@ -322,7 +326,7 @@ for glyphName in mergedFont:
     ## TODO: this value is bogus and may not be valid for non-CJK/latin fonts
     if unicodePoint >= 0x2E9D:
         if verbose:
-            print sys.argv[0] + ": doubleWidth: " + unicodePoint
+            print(sys.argv[0] + ": doubleWidth: " + unicodePoint)
     elif glyphWidth > maxWidth :
         try:
             heightScale = 1.0
@@ -341,8 +345,8 @@ for glyphName in mergedFont:
             vert = 0.0
             mergedFont[glyphName].transform(psMat.translate(horiz,vert))
             if verbose :
-                print sys.argv[0] + ": " + nameUnicodes[unicodePoint] + " scale width=" + str(widthScale) + ", height=" + str(heightScale)
-                print sys.argv[0] + ": " + str(nameUnicodes[unicodePoint]) + " translate horiz=" + str(widthScale) + ", vert=" + str(heightScale)
+                print(sys.argv[0] + ": " + nameUnicodes[unicodePoint] + " scale width=" + str(widthScale) + ", height=" + str(heightScale))
+                print(sys.argv[0] + ": " + str(nameUnicodes[unicodePoint]) + " translate horiz=" + str(widthScale) + ", vert=" + str(heightScale))
         except:
             pass
     else:
@@ -353,18 +357,18 @@ for glyphName in mergedFont:
         if unicodePoint in nameUnicodes :
             name = nameUnicodes[unicodePoint]
         if verbose :
-            print sys.argv[0] + ": " + name + " translate horiz=" + str(widthScale) + ", vert=" + str(heightScale)
+            print(sys.argv[0] + ": " + name + " translate horiz=" + str(widthScale) + ", vert=" + str(heightScale))
 
     mergedFont[glyphName].width = finalWidthScale * (maxWidth + avgSpacing*2)
     if verbose :
         name = ""
-        if unicodePoint in nameUnicodes.keys():
+        if unicodePoint in list(nameUnicodes.keys()):
             name = nameUnicodes[unicodePoint]
         else:
             name = str(unicodePoint)
 
 
-        print sys.argv[0] + ": " + name + " width="+str(mergedFont[glyphName].width)
+        print(sys.argv[0] + ": " + name + " width="+str(mergedFont[glyphName].width))
 
 # the names do not always hit all altuni names, force these to monospace too
 for glyph in mergedFont.glyphs():
@@ -435,6 +439,6 @@ finalOutput = fontName.replace(" ","-")+ ".ttf"
 mergedFont.generate(ttfAutoHintInput, flags=('PfEd-comments',))
 
 ## ttfautohint outputs GDI ClearType hinting
-subprocess.call(["ttfautohint", "-w", "G", ttfAutoHintInput, finalOutput])
+subprocess.call(["ttfautohint", "-a", "qsq", ttfAutoHintInput, finalOutput])
 exit(0)
 
