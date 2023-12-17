@@ -58,18 +58,18 @@ def generate_mono(args):
     baseFont = None
     fontList = list()
     glifs = set()
-    namesList = args.nameslist or Path(__file__).with_name("NamesList.txt")
-    copyright = args.copyright or ""
-    psName = args.psname or ""
-    fullName = args.fullname or ""
-    verbose = args.verbose or False
-    xadjust = args.xadjust or 0
-    leadingScale = args.leadingscale or 0.0
-    familyName = args.familyname or ""
-    noScaleChars = args.noscalechar or list()
-    finalWidthScale = float(args.widthscale) if args.widthscale else 1.0
+    namesList = args.get("nameslist") or  Path(__file__).with_name("NamesList.txt")
+    copyright = args.get("copyright") or ""
+    psName = args.get("psname") or ""
+    fullName = args.get("fullname") or ""
+    verbose = args.get("verbose") or False
+    xadjust = args.get("xadjust") or 0
+    leadingScale = args.get("leadingscale") or 0.0
+    familyName = args.get("familyname") or ""
+    noScaleChars = args.get("noscalechar") or list()
+    finalWidthScale = args.get("widthscale") or 1.0
 
-    for fontFile in args.fontFiles:
+    for fontFile in args["fontFiles"]:
         print('opening ' + fontFile)
         font = fontforge.open(fontFile)
 
@@ -392,4 +392,9 @@ def generate_mono(args):
 
 def main():
     args = parse_args()
-    generate_mono(args)
+    args_dict = vars(args)
+    generate_mono(args_dict)
+
+if __name__ == '__main__':
+    print("MAIN")
+    main()
