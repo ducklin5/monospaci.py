@@ -84,7 +84,18 @@ def generate_mono(args):
         print("could not open font")
         sys.exit(42)
 
-    mergedFont = baseFont 
+    mergedFont = baseFont
+
+    #############################################################
+    # Remove empty glyphs
+
+    for glyph in list(mergedFont.glyphs()):
+        # Check if the glyph has no contours (is empty)
+        if glyph.foreground.isEmpty():
+            # Remove the glyph
+            mergedFont.removeGlyph(glyph.glyphname)
+    #############################################################
+
     #mergedFont.encoding = 'UnicodeBmp'
     supplement = " Mono"
     oldname = "UnnamedFont"
@@ -160,6 +171,16 @@ def generate_mono(args):
             mergedFontUnicodePoints.add(unicodePoint)
 
     for complementFont in fontList :
+        #############################################################
+        # Remove empty glyphs
+
+        for glyph in list(complementFont.glyphs()):
+            # Check if the glyph has no contours (is empty)
+            if glyph.foreground.isEmpty():
+                # Remove the glyph
+                complementFont.removeGlyph(glyph.glyphname)
+        #############################################################
+
         complementFontGlyphs = set()
 
         for glyphName in complementFont:
