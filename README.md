@@ -30,6 +30,7 @@ Some examples below, do note that the depicted fonts aren't available from here,
 
 JUnicode, excellent for studying old languages. ([Original](http://junicode.sourceforge.net/))
 
+
 ![.vimrc with Sniglet Mono](images/sniglet_ftw.png)
 
 Sniglet Mono, when your vim needs more kittens. ([Original](https://github.com/theleagueof/sniglet))
@@ -38,7 +39,7 @@ Sniglet Mono, when your vim needs more kittens. ([Original](https://github.com/t
 
 EB Garamond Mono, when your C++ isn't classy enough ([Original](http://www.georgduffner.at/ebgaramond/))
 
-![Python with Fifth Leg Mono](squared_python.png))
+![Python with Fifth Leg Mono](images/squared_python.png)
 
 Fifth Leg Mono, thinking inside the box with Python ([Original](http://gitorious.org/opensuse/art/trees/master/00assets/fonts))
 
@@ -51,6 +52,7 @@ Comic Sans MS Mono, really makes your Java pop!
 Papyrus Mono, give your JavaScript that antique look!
 
 [1]: "Courier, Century SchoolBook Mono BT, and Verily Serif"
+
 [2]: "Too many to mention"
 
 
