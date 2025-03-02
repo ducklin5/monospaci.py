@@ -1,32 +1,33 @@
 #!/usr/bin/python
-#
-# monospaci.py is copyright (C) 2012 
-# by Thomas Eriksson
-# imporved by Azeez Abass (2023)
-#
-#   Redistribution and use in source and binary forms, with or without
-#   modification, are permitted provided that the following conditions are met:
-#
-#   Redistributions of source code must retain the above copyright notice, this
-#   list of conditions and the following disclaimer.
-#
-#   Redistributions in binary form must reproduce the above copyright notice,
-#   this list of conditions and the following disclaimer in the documentation
-#   and/or other materials provided with the distribution.
-#
-#   The name of the author may not be used to endorse or promote products
-#   derived from this software without specific prior written permission.
-#
-#   THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-#   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-#   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
-#   EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-#   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-#   PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
-#   OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-#   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-#   OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-#   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+###############################################################################
+# monospaci.py is copyright (C) 2012
+# - created by Thomas Eriksson
+# - modded by Azeez Abass (2023)
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+# 
+# Redistributions of source code must retain the above copyright notice, this
+# list of conditions and the following disclaimer.
+# 
+# Redistributions in binary form must reproduce the above copyright notice,
+# this list of conditions and the following disclaimer in the documentation
+# and/or other materials provided with the distribution.
+# 
+# The name of the author may not be used to endorse or promote products
+# derived from this software without specific prior written permission.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# 		PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# 		OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# 		OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 ###############################################################################
 
@@ -68,9 +69,10 @@ def generate_mono(args):
     familyName = args.get("familyname") or ""
     noScaleChars = args.get("noscalechar") or list()
     finalWidthScale = args.get("widthscale") or 1.0
+    fontFiles = args.get("fontFiles")
 
     for fontFile in args["fontFiles"]:
-        print('opening ' + fontFile)
+        print(f'opening "{fontFile}"')
         font = fontforge.open(fontFile)
 
         if baseFont is None:
@@ -83,6 +85,9 @@ def generate_mono(args):
     if baseFont is None:
         print("could not open font")
         sys.exit(42)
+
+    basefilename = os.path.basename(fontFiles[0])
+    baseFont.fontname = os.path.splitext(basefilename)[0].replace(' ', '-')
 
     mergedFont = baseFont
 
@@ -108,8 +113,7 @@ def generate_mono(args):
         fontName = psName 
 
     ## set name and values
-    mergedFont.fontname = fontName
-    #mergedFont.fontname = fontName.replace(" ","")
+    mergedFont.fontname = fontName.replace(" ","-")
     if len(fullName) > 0:
         mergedFont.fullname = fullName
     else:
@@ -121,7 +125,7 @@ def generate_mono(args):
 
     if mergedFont.fontlog == None:
        mergedFont.fontlog = ""
-    mergedFont.fontlog = mergedFont.fontlog + "Modified into monospace by monospaci.py (https://github.com/arnognulf/monospaci.py)\n"
+    mergedFont.fontlog = mergedFont.fontlog + "Modified into monospace by monospaci.py (https://github.com/ducklin5/monospaci.py)\n"
     mergedFont.os2_panose = (2, 9, 5, 9, 0, 0, 0, 0, 0, 0) 
     mergedFont.os2_fstype = 8
     mergedFont.copyright = copyright
